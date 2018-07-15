@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -299,6 +300,7 @@ public class MerchantDetailActivity extends CoreActivity implements View.OnClick
                                 .findViewById(R.id.md_item_pending_TV);
                         holder.type = (TextView) convertView
                                 .findViewById(R.id.md_item_type_TV);
+                        holder.billItemLL = (LinearLayout) convertView.findViewById(R.id.billItemLL);
                         convertView.setTag(holder);
                     } else {
                         holder = (ViewHolder) convertView.getTag();
@@ -315,6 +317,12 @@ public class MerchantDetailActivity extends CoreActivity implements View.OnClick
                         holder.totalCollectionAmount.setText(bAmountFormatted);
                         holder.type.setText(bill.getcType());
                         holder.pendingCollectionAmount.setText(balanceAmountFormatted);
+                        if(bill.getBc() == 1) {
+                            holder.billItemLL.setBackgroundColor(getResources().getColor(R.color.c18));
+                        }else {
+                            holder.billItemLL.setBackgroundColor(getResources().getColor(R.color.c0));
+
+                        }
                     }
                 }
                 break;
@@ -446,6 +454,7 @@ public class MerchantDetailActivity extends CoreActivity implements View.OnClick
     };
 
     public static class ViewHolder {
+        public LinearLayout billItemLL;
         public TextView collectionDate;
         public TextView totalCollectionAmount;
         public TextView type;

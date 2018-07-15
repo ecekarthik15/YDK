@@ -133,6 +133,17 @@ public class MerchantParser extends JSONParser {
 
                                         bill.setAid(billObj.getInt("atid"));
                                     }
+                                    if(billObj.has("bc")){
+                                        boolean bc = billObj.getBoolean("bc");
+                                        if(bc){
+                                            bill.setBc(1);
+
+                                        }else {
+                                            bill.setBc(0);
+
+                                        }
+
+                                    }
                                     if(billObj.has("ct")){
                                         bill.setcType(""+billObj.getString("ct"));
                                     }

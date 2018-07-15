@@ -27,6 +27,7 @@ public class Bill implements Serializable,Comparable<Bill>{
     private String billingNumber;
     private String date;
     private Integer aid;
+    private Integer bc;
     private String cType;
     private Double billingAmount;
     private Double billingBalance;
@@ -48,6 +49,7 @@ public class Bill implements Serializable,Comparable<Bill>{
         this.billingNumber = "";
         this.date = "";
         this.cType = "";
+        this.bc = 0;
         this.billingAmount = 0.00;
         this.billingBalance = 0.00;
         this.noBalance = 0;
@@ -57,12 +59,13 @@ public class Bill implements Serializable,Comparable<Bill>{
 
 
     }
-    public Bill(int id,int merchantId,String billingNumber,String date,int aid,String cType, double billingAmount,double billingBalance ,int noBalance, double totalDiscounts, String modifiedAt, int modifiedBy){
+    public Bill(int id,int merchantId,String billingNumber,String date,int aid,int bc,String cType, double billingAmount,double billingBalance ,int noBalance, double totalDiscounts, String modifiedAt, int modifiedBy){
         this.id = id;
         this.merchantId = merchantId;
         this.billingNumber = billingNumber;
         this.date = date;
         this.aid = aid;
+        this.bc = bc;
         this.cType = cType;
         this.billingAmount = billingAmount;
         this.billingBalance = billingBalance;
@@ -112,6 +115,14 @@ public class Bill implements Serializable,Comparable<Bill>{
 
     public void setAid(int aid) {
         this.aid = aid;
+    }
+
+    public int getBc() {
+        return bc;
+    }
+
+    public void setBc(int bc) {
+        this.bc = bc;
     }
 
     public String getcType() {
@@ -184,6 +195,7 @@ public class Bill implements Serializable,Comparable<Bill>{
     public static final String COLUMN_BILL_NUMBER = "billNumber";
     public static final String COLUMN_BILL_DATE = "billDate";
     public static final String COLUMN_BILL_AID = "aId";
+    public static final String COLUMN_BILL_BC = "billBC";
     public static final String COLUMN_BILL_TYPE = "commodityType";
     public static final String COLUMN_BILL_AMOUNT = "billAmount";
     public static final String COLUMN_BILL_BALANCE = "billBalance";
@@ -200,6 +212,7 @@ public class Bill implements Serializable,Comparable<Bill>{
             COLUMN_BILL_NUMBER,
             COLUMN_BILL_DATE,
             COLUMN_BILL_AID,
+            COLUMN_BILL_BC,
             COLUMN_BILL_TYPE,
             COLUMN_BILL_AMOUNT,
             COLUMN_BILL_BALANCE,
@@ -219,6 +232,7 @@ public class Bill implements Serializable,Comparable<Bill>{
                     + COLUMN_BILL_NUMBER + " TEXT, "
                     + COLUMN_BILL_DATE + " TEXT, "
                     + COLUMN_BILL_AID + " INTEGER, "
+                    + COLUMN_BILL_BC + " INTEGER, "
                     + COLUMN_BILL_TYPE + " TEXT, "
                     + COLUMN_BILL_AMOUNT + " REAL, "
                     + COLUMN_BILL_BALANCE + " REAL, "
@@ -243,6 +257,7 @@ public class Bill implements Serializable,Comparable<Bill>{
         map.put(COLUMN_BILL_NUMBER, billingNumber);
         map.put(COLUMN_BILL_DATE, date);
         map.put(COLUMN_BILL_AID, aid);
+        map.put(COLUMN_BILL_BC, bc);
         map.put(COLUMN_BILL_TYPE, cType);
         map.put(COLUMN_BILL_AMOUNT, billingAmount);
         map.put(COLUMN_BILL_BALANCE, billingBalance);
@@ -282,7 +297,7 @@ public class Bill implements Serializable,Comparable<Bill>{
 
             cursor.moveToPosition(j);
 
-            bill = new Bill(cursor.getInt(0), cursor.getInt(1),cursor.getString(2) ,cursor.getString(3),cursor.getInt(4),cursor.getString(5),cursor.getDouble(6),cursor.getDouble(7),cursor.getInt(8),cursor.getDouble(9),cursor.getString(10),cursor.getInt(11));
+            bill = new Bill(cursor.getInt(0), cursor.getInt(1),cursor.getString(2) ,cursor.getString(3),cursor.getInt(4),cursor.getInt(5),cursor.getString(6),cursor.getDouble(7),cursor.getDouble(8),cursor.getInt(9),cursor.getDouble(10),cursor.getString(11),cursor.getInt(12));
             billList.add(bill);
         }
 

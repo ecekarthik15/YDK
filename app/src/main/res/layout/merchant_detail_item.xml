@@ -5,7 +5,7 @@
     android:background="@color/b0">
 
     <LinearLayout
-        android:id="@+id/LinearLayout01"
+        android:id="@+id/billItemLL"
         android:layout_width="fill_parent"
         android:layout_height="80dp"
         android:orientation="vertical"
