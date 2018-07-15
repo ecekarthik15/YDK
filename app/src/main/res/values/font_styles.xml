@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="CustomFont" parent="android:TextAppearance"/>
+
+
+    <string name="font_light">Roboto-Light</string>
+    <string name="font_regular">Roboto-Regular</string>
+    <string name="font_medium">Roboto-Medium</string>
+    <string name="font_thin">Roboto-Thin</string>
+    <string name="font_bold">Roboto-Bold</string>
+
+
+</resources>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/LinearLayout01"
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:background="@color/c0"
+        android:orientation="vertical"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:paddingRight="4dp"
+        android:paddingLeft="4dp"
+
+        android:layout_marginTop="4dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <RelativeLayout
+            android:id="@+id/LinearLayout02"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <android.sales.rajesh.com.sales.View.SFTextView
+                android:id="@+id/merchantName_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="2dp"
+                android:textColor="@color/c2"
+                android:textSize="20sp"
+                android:layout_gravity="top"
+                android:maxLines="1"
+                android:text=""
+                android:ellipsize="end"
+                android:textStyle="bold">
+
+            </android.sales.rajesh.com.sales.View.SFTextView>
+
+            <android.sales.rajesh.com.sales.View.SFTextView
+                android:id="@+id/merchantAmount_TV"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="2dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textSize="18sp"
+                android:layout_alignParentRight="true"
+                android:gravity="right"
+                android:textColor="@color/c16"
+                android:textStyle="bold"
+                android:textAllCaps="false" />
+        </RelativeLayout>
+
+        <android.sales.rajesh.com.sales.View.SFTextView
+            android:id="@+id/merchants_list_item_date"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginLeft="2dp"
+            android:ellipsize="end"
+            android:textSize="16sp"
+            android:maxLines="1"
+            android:textColor="@color/c3"
+            android:textStyle="italic|normal">
+
+        </android.sales.rajesh.com.sales.View.SFTextView>
+    </LinearLayout>
+</RelativeLayout>

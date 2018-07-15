@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/LinearLayout01"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal">
+
+        <android.sales.rajesh.com.sales.View.SFTextView
+            android:id="@+id/mph_receipt_NO_TV"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_weight="1"
+            android:layout_marginLeft="2dp"
+            android:textColor="@color/c2"
+            android:textSize="17sp"
+            android:layout_gravity="left"
+            android:maxLines="1"
+            android:text=""
+            android:ellipsize="end">
+
+        </android.sales.rajesh.com.sales.View.SFTextView>
+
+        <android.sales.rajesh.com.sales.View.SFTextView
+            android:id="@+id/mph_date_TV"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginLeft="2dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/c2"
+            android:textSize="17sp"
+            android:layout_gravity="center"
+            android:maxLines="1"
+            android:text=""
+            android:ellipsize="end">
+        </android.sales.rajesh.com.sales.View.SFTextView>
+
+        <android.sales.rajesh.com.sales.View.SFTextView
+            android:id="@+id/mph_amount_TV"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_weight="1"
+            android:layout_marginLeft="2dp"
+            android:textColor="@color/c2"
+            android:textSize="17sp"
+            android:layout_gravity="right"
+            android:maxLines="1"
+            android:text=""
+            android:ellipsize="end">
+
+        </android.sales.rajesh.com.sales.View.SFTextView>
+    </LinearLayout>
+
+
+
+</LinearLayout>

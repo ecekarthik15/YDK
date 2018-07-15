@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/md_visited_payment_BT"
+        android:title="@string/add_payment"
+        app:showAsAction="always"
+        android:icon="@drawable/money_icon"
+        android:orderInCategory="0">
+
+        <menu>
+            <item android:id="@+id/menu_payment_A" android:title="@string/payment_a">
+
+            </item>
+            <item android:id="@+id/menu_payment_E" android:title="@string/payment_e"></item>
+
+        </menu>
+
+    </item>
+
+</menu>

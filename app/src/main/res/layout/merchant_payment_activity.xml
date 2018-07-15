@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/app_toolbar"
+        layout="@layout/app_toolbar" />
+
+    <LinearLayout
+        android:id="@+id/LinearLayout15"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/b0"
+        android:orientation="vertical"
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:id="@+id/mp_customer_name_value_TV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:maxLines="3"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="Apoorva Textiles"
+            android:textColor="@color/c2"
+            android:textSize="25sp"
+            android:textStyle="normal|bold"></TextView>
+
+        <LinearLayout
+            android:id="@+id/LinearLayout01"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/mp_pending_balance_tag_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="serif"
+                android:gravity="center_vertical"
+                android:text="Balance:"
+                android:textColor="@color/c2"
+                android:textSize="17sp"
+                android:textStyle="normal|bold">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/mp_pending_balance_value_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dip"
+                android:fontFamily="serif"
+                android:gravity="center_vertical"
+                android:text=""
+                android:textColor="@color/c16"
+                android:textSize="17sp"
+                android:textStyle="normal|bold"></TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearLayout02"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/mp_pending_receipt_no_tag_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="serif"
+                android:gravity="center_vertical"
+                android:text="Receipt No:"
+                android:textColor="@color/c2"
+                android:textSize="17sp"
+                android:textStyle="normal|bold">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/mp_pending_receipt_no_value_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dip"
+                android:fontFamily="serif"
+                android:gravity="center_vertical"
+                android:text="1231287321812"
+                android:textColor="@color/c2"
+                android:textSize="17sp"
+                android:textStyle="normal|bold"></TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearLayout03"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/mp_date_tag_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="serif"
+                android:gravity="center_vertical"
+                android:text="Date of Payment:"
+                android:textColor="@color/c2"
+                android:textSize="17sp"
+                android:textStyle="normal|bold">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/mp_date_value_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dip"
+                android:fontFamily="serif"
+                android:gravity="center_vertical"
+                android:text="10/12/17"
+                android:textColor="@color/c2"
+                android:textSize="17sp"
+                android:textStyle="normal|bold"></TextView>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/mp_activity_SV"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/b0">
+
+        <LinearLayout
+            android:id="@+id/mp_LinearLayout25"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/c0"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
+            android:orientation="vertical"
+            android:paddingBottom="10dp">
+
+            <LinearLayout
+                android:id="@+id/LinearLayout05"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/mp_collection_amount_tag_TV"
+                    android:layout_width="130dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:fontFamily="serif"
+                    android:gravity="center_vertical"
+                    android:text="Collection:"
+                    android:textColor="@color/c2"
+                    android:textSize="17sp"
+                    android:textStyle="normal|bold">
+
+                </TextView>
+
+                <EditText
+                    android:id="@+id/mp_collection_amount_value_ET"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dip"
+                    android:layout_weight="1"
+                    android:digits=".0123456789"
+                    android:fontFamily="serif"
+                    android:gravity="center_vertical"
+                    android:hint="Enter the Amount"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/c2"
+                    android:textSize="17sp"
+                    android:textStyle="normal"></EditText>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LinearLayout04"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/mp_discount_amount_tag_TV"
+                    android:layout_width="130dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:fontFamily="serif"
+                    android:gravity="center_vertical"
+                    android:text="Discount:"
+                    android:textColor="@color/c2"
+                    android:textSize="17sp"
+                    android:textStyle="normal|bold">
+
+                </TextView>
+
+                <EditText
+                    android:id="@+id/mp_discount_amount_value_ET"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:digits=".0123456789"
+                    android:fontFamily="serif"
+                    android:gravity="center_vertical"
+                    android:hint="Enter the Amount"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/c2"
+                    android:textSize="17sp"
+                    android:textStyle="normal"></EditText>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LinearLayout07"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/mp_total_amount_tag_TV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:fontFamily="serif"
+                    android:gravity="center_vertical"
+                    android:text="Total Amount:"
+                    android:textColor="@color/c2"
+                    android:textSize="17sp"
+                    android:textStyle="normal|bold">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/mp_total_amount_value_TV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dip"
+                    android:fontFamily="serif"
+                    android:gravity="center_vertical"
+                    android:text="Rs:1,00,000"
+                    android:textColor="@color/c2"
+                    android:textSize="22sp"
+                    android:textStyle="normal|bold"></TextView>
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/mp_pending_payments_TAG_TV"
+                android:layout_width="match_parent"
+                android:layout_height="50dip"
+                android:background="@color/b0"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="Pending Payments"
+                android:textColor="@color/c2"
+                android:textSize="20sp"
+                android:textStyle="normal|bold">
+
+            </TextView>
+
+            <!--<ImageView-->
+            <!--android:id="@+id/mp_pending_border_image"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="8dp"-->
+            <!--android:src="@drawable/divider"-->
+            <!--android:scaleType="fitXY">-->
+            <!--</ImageView>-->
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

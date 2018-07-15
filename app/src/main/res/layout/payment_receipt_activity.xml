@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/app_toolbar"
+        layout="@layout/app_toolbar" />
+
+    <LinearLayout
+        android:id="@+id/LinearLayout01"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/pr_choose_bluetooth_device_spinner"
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:spinnerMode="dialog"></Spinner>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LinearLayout15"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/b0"
+        android:orientation="vertical"
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:id="@+id/pr_customer_name_value_TV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:maxLines="3"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="Apoorva Textiles"
+            android:textColor="@color/c2"
+            android:textSize="25sp"
+            android:textStyle="normal|bold"></TextView>
+
+        <LinearLayout
+            android:id="@+id/LinearLayout02"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/pr_total_bill_tag_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="serif"
+                android:gravity="center_vertical"
+                android:text="Total Paid:"
+                android:textColor="@color/c2"
+                android:textSize="17sp"
+                android:textStyle="normal|bold">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/pr_total_bill_value_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dip"
+                android:fontFamily="serif"
+                android:gravity="center_vertical"
+                android:text=""
+                android:textColor="@color/c16"
+                android:textSize="17sp"
+                android:textStyle="normal|bold"></TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearLayout03"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/pr_pending_receipt_no_tag_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="serif"
+                android:gravity="center_vertical"
+                android:text="Receipt No:"
+                android:textColor="@color/c2"
+                android:textSize="17sp"
+                android:textStyle="normal|bold">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/pr_pending_receipt_no_value_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dip"
+                android:fontFamily="serif"
+                android:gravity="center_vertical"
+                android:text="1231287321812"
+                android:textColor="@color/c2"
+                android:textSize="17sp"
+                android:textStyle="normal|bold"></TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearLayout04"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/pr_date_tag_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="serif"
+                android:gravity="center_vertical"
+                android:text="Date of Payment:"
+                android:textColor="@color/c2"
+                android:textSize="17sp"
+                android:textStyle="normal|bold">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/pr_date_value_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dip"
+                android:fontFamily="serif"
+                android:gravity="center_vertical"
+                android:text="10/12/17"
+                android:textColor="@color/c2"
+                android:textSize="17sp"
+                android:textStyle="normal|bold"></TextView>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LinearLayout05"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:orientation="vertical">
+
+
+        <Button
+            android:id="@+id/pr_print_BT"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dip"
+            android:background="@color/colorPrimary"
+            android:paddingLeft="5dip"
+            android:paddingRight="5dip"
+            android:text="PRINT RECEIPT"
+            android:textColor="@color/c0"
+            android:textStyle="bold"
+            android:visibility="visible"></Button>
+
+    </LinearLayout>
+
+</LinearLayout>

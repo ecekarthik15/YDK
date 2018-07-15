@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ml_choose_city_TV"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:height="50dp"
+    android:gravity="center_vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:maxLines="1"
+    android:text="Merchant Name"
+    android:textColor="@color/c9"
+    android:textSize="18sp"></TextView>

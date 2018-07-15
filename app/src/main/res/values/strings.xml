@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">YDKPro</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="no_connectivity_alert_title">Internet Connection Needed</string>
+	<string name="no_connectivity_alert_msg">Sorry, we are having problems connecting at this
+		time.</string>
+    <string name="connectivity_unavailable">Connectivity available</string>
+    <string name="hint_login_passcode_text">Enter your Passcode Below</string>
+    <string name="hint_login_password">Enter your Passcode Here</string>
+    <string name="hint_search_key">Enter Customer Name</string>
+
+
+    <string name="customer_list_title">Customers</string>
+    <string name="customer_detail_title">Customer Details</string>
+
+
+    <string name="add_payment">ADD PAYMENT</string>
+
+    <string name="payment_a">Payment A</string>
+    <string name="payment_e">Payment E</string>
+
+    <string name="payment_title">Payment</string>
+
+    <string name="payment_history_title">Payment History</string>
+
+
+</resources>
