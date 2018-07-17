@@ -10,9 +10,7 @@
         android:orderInCategory="0">
 
         <menu>
-            <item android:id="@+id/menu_payment_A" android:title="@string/payment_a">
-
-            </item>
+            <item android:id="@+id/menu_payment_A" android:title="@string/payment_a"></item>
             <item android:id="@+id/menu_payment_E" android:title="@string/payment_e"></item>
 
         </menu>

@@ -42,6 +42,8 @@ public class MerchantDetailActivity extends CoreActivity implements View.OnClick
     private static final String TAG = MerchantDetailActivity.class.getSimpleName();
     protected static final int LOAD_MERCHANTS_DETAIL_ITEM_LIST = 0;
     protected static final int LOAD_PAYMENT_DETAIL = 1;
+    protected static final int LOAD_ERROR_MSG = 2;
+
 
     TextView merchantNameTV;
     TextView merchantBalanceTagTV;
@@ -445,6 +447,17 @@ public class MerchantDetailActivity extends CoreActivity implements View.OnClick
                     startActivity(gotoMerchantPaymentActivity);
 
                 }
+
+
+                break;
+
+
+                case LOAD_ERROR_MSG:{
+
+                    showAlertMessage("SalesApp","There is no Pending Balance.", Constants.ALERT_WITH_OK_BUTTON);
+
+
+                }
                 break;
 
             }
@@ -493,19 +506,36 @@ public class MerchantDetailActivity extends CoreActivity implements View.OnClick
 
         if(id == R.id.menu_payment_A){
 
-            handler.sendEmptyMessage(LOAD_PAYMENT_DETAIL);
+            if(selectedMerchant.getTotalABalance() <= 0) {
+
+                handler.sendEmptyMessage(LOAD_ERROR_MSG);
 
 
-            selectedPaymentType = SalesProtocol.PAYMENT_TYPE_A;
+            }else{
+                selectedPaymentType = SalesProtocol.PAYMENT_TYPE_A;
+
+                handler.sendEmptyMessage(LOAD_PAYMENT_DETAIL);
+
+            }
+
+
 
             return true;
         }
 
         if(id == R.id.menu_payment_E){
 
-            selectedPaymentType = SalesProtocol.PAYMENT_TYPE_E;
+            if(selectedMerchant.getTotalEBalance() <= 0) {
 
-            handler.sendEmptyMessage(LOAD_PAYMENT_DETAIL);
+                handler.sendEmptyMessage(LOAD_ERROR_MSG);
+
+
+            }else {
+
+                selectedPaymentType = SalesProtocol.PAYMENT_TYPE_E;
+
+                handler.sendEmptyMessage(LOAD_PAYMENT_DETAIL);
+            }
 
             return true;
         }
