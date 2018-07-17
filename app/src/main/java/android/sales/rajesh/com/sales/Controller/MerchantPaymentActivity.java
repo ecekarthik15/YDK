@@ -33,9 +33,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -53,7 +51,9 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
 
     public static final String COLLECTION_AMOUNT_EDITTEXT_TAG = "COLLECTION_AMOUNT_EDITTEXT_TAG";
     public static final String DISCOUNT_AMOUNT_EDITTEXT_TAG = "DISCOUNT_AMOUNT_EDITTEXT_TAG";
-    public static final String PENDING_BILLS_TAG = "PENDING_BILLS_TAG";
+    public static final String ENTERED_AMOUNT_PENDING_BILLS_TAG = "ENTERED_AMOUNT_PENDING_BILLS_TAG";
+    public static final String DISCOUNT_AMOUNT_PENDING_BILLS_TAG = "DISCOUNT_AMOUNT_PENDING_BILLS_TAG";
+
 
 
     Merchant selectedMerchant;
@@ -80,7 +80,9 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
 
     Button homeBt, rightBt;
 
-    List<EditText> editTextList;
+    List<EditText> enteredAmountEditTextList;
+    List<EditText> enteredDiscountEditTextList;
+
     List<Bill> billList;
 
     double totalEnteredPendingBillsAmount;
@@ -200,7 +202,7 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
 
                     for (Bill bill:billList) {
 
-                        EditText editText = (EditText) getEditTextByTag(PENDING_BILLS_TAG+bill.getId());
+                        EditText editText = (EditText) getEditTextByTag(ENTERED_AMOUNT_PENDING_BILLS_TAG +bill.getId());
 
                         String enteredAmountStr = editText.getText().toString();
                         double enteredBillAmount = 0.0;
@@ -284,7 +286,8 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
 
         billList = Bill.readData(billListquery);
         if (billList != null && billList.size() > 0) {
-            editTextList = new ArrayList<>(billList.size());
+            enteredAmountEditTextList = new ArrayList<>(billList.size());
+            enteredDiscountEditTextList = new ArrayList<>(billList.size());
         }
 
         if(billList == null){
@@ -391,16 +394,16 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
 
             listLinearlayout12.addView(pendingBalanceTV);
 
+//entered edittext
 
             EditText amountInputET = new EditText(this);
-            amountInputET.setTag(PENDING_BILLS_TAG + bill.getId());
+            amountInputET.setTag(ENTERED_AMOUNT_PENDING_BILLS_TAG + bill.getId());
 
-            editTextList.add(amountInputET);
+            enteredAmountEditTextList.add(amountInputET);
 
             amountInputET.addTextChangedListener(new PaymentTextWatcher(amountInputET));
 
             int amountInputETHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
-            int amountInputETWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, getResources().getDisplayMetrics());
 
             LinearLayout.LayoutParams amountInputETParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                     amountInputETHeight);
@@ -415,8 +418,34 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
             amountInputET.setHint("Please enter the Amount");
 
             amountInputET.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-
             listLinearlayout11.addView(amountInputET);
+
+
+//discount edittext
+            EditText discountAmountInputET = new EditText(this);
+            discountAmountInputET.setTag(DISCOUNT_AMOUNT_PENDING_BILLS_TAG + bill.getId());
+
+            enteredDiscountEditTextList.add(discountAmountInputET);
+
+            discountAmountInputET.addTextChangedListener(new PaymentTextWatcher(discountAmountInputET));
+
+            int discountInputETHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
+
+            LinearLayout.LayoutParams discountInputETParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                    discountInputETHeight);
+
+            discountInputETParams.setMargins(50, 0, 50, 0);
+            discountInputETParams.gravity = Gravity.CENTER;
+
+            discountAmountInputET.setLayoutParams(discountInputETParams);
+
+            discountAmountInputET.setGravity(Gravity.CENTER_VERTICAL);
+
+            discountAmountInputET.setHint("Please enter the Discount Amount");
+
+            discountAmountInputET.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            listLinearlayout11.addView(discountAmountInputET);
+
 
 
         }
@@ -567,7 +596,7 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
 
                 this.mEditText.addTextChangedListener(this);
 
-            } else if (mEditText.getTag().toString().contains(PENDING_BILLS_TAG)) {
+            } else if (mEditText.getTag().toString().contains(ENTERED_AMOUNT_PENDING_BILLS_TAG)) {
 
                 this.mEditText.removeTextChangedListener(this);
 
@@ -656,7 +685,7 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
 
             double total = 0;
 
-            for (EditText editText : editTextList) {
+            for (EditText editText : enteredAmountEditTextList) {
 
 
                 String editTextTag = editText.getTag().toString();
@@ -687,7 +716,7 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
 
         EditText returnEditText = null;
 
-        for (EditText editText:editTextList) {
+        for (EditText editText: enteredAmountEditTextList) {
 
             if(editText.getTag().equals(tag)){
 
@@ -835,7 +864,7 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
         }else {
 
 
-            for (EditText editText : editTextList) {
+            for (EditText editText : enteredAmountEditTextList) {
 
                 String pendingBillEnteredStr = editText.getText().toString();
 
