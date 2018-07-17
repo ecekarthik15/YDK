@@ -118,8 +118,8 @@ public class MerchantParser extends JSONParser {
 
                                     bill.setMerchantId(merchantObj.getId());
 
-                                    if(billObj.has("id")){
-                                        bill.setId(billObj.getInt("id"));
+                                    if(billObj.has("bid")){
+                                        bill.setId(billObj.getInt("bid"));
                                     }
                                     if(billObj.has("bn")){
                                         bill.setBillingNumber(billObj.getString("bn"));

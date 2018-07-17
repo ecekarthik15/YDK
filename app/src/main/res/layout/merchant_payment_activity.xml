@@ -184,7 +184,7 @@
                     android:digits=".0123456789"
                     android:fontFamily="serif"
                     android:gravity="center_vertical"
-                    android:hint="Enter the Amount"
+                    android:hint="0.00"
                     android:inputType="numberDecimal"
                     android:textColor="@color/c2"
                     android:textSize="17sp"

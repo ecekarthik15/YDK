@@ -83,7 +83,7 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
     List<EditText> enteredAmountEditTextList;
     List<EditText> enteredDiscountEditTextList;
 
-    List<Bill> billList;
+    List<Bill> mBillList;
 
     double totalEnteredPendingBillsAmount;
 
@@ -134,6 +134,10 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
 
         paymentSV = (ScrollView) findViewById(R.id.mp_activity_SV);
 
+        collectionAmountET.setEnabled(false);
+        discountAmountET.setEnabled(false);
+
+
 
         LocationHelper locationHelper = new LocationHelper();
 
@@ -152,14 +156,15 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
 
         collectionAmountET.setTag(COLLECTION_AMOUNT_EDITTEXT_TAG);
 
-        collectionAmountET.addTextChangedListener(new PaymentTextWatcher(collectionAmountET));
+//        collectionAmountET.addTextChangedListener(new PaymentTextWatcher(collectionAmountET));
 
+        collectionAmountET.setText("0.00");
 
         discountAmountET.setTag(DISCOUNT_AMOUNT_EDITTEXT_TAG);
 
         discountAmountET.setText("0.00");
 
-        discountAmountET.addTextChangedListener(new PaymentTextWatcher(discountAmountET));
+//        discountAmountET.addTextChangedListener(new PaymentTextWatcher(discountAmountET));
 
 
         merchantNameTV.setText(selectedMerchant.getName());
@@ -200,9 +205,9 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
 
                     UserLogin userLogin = UserLogin.getLastLoggedInUser();
 
-                    for (Bill bill:billList) {
+                    for (Bill bill: mBillList) {
 
-                        EditText editText = (EditText) getEditTextByTag(ENTERED_AMOUNT_PENDING_BILLS_TAG +bill.getId());
+                        EditText editText = (EditText) getEnteredAmountEditTextByTag(ENTERED_AMOUNT_PENDING_BILLS_TAG +bill.getId());
 
                         String enteredAmountStr = editText.getText().toString();
                         double enteredBillAmount = 0.0;
@@ -284,20 +289,20 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
 
         Log.d(TAG, "billListquery : " + billListquery);
 
-        billList = Bill.readData(billListquery);
-        if (billList != null && billList.size() > 0) {
-            enteredAmountEditTextList = new ArrayList<>(billList.size());
-            enteredDiscountEditTextList = new ArrayList<>(billList.size());
+        mBillList = Bill.readData(billListquery);
+        if (mBillList != null && mBillList.size() > 0) {
+            enteredAmountEditTextList = new ArrayList<>(mBillList.size());
+            enteredDiscountEditTextList = new ArrayList<>(mBillList.size());
         }
 
-        if(billList == null){
+        if(mBillList == null){
             return;
         }
 
-        for (int i = 0; i < billList.size(); i++) {
+        for (int i = 0; i < mBillList.size(); i++) {
 
 
-            Bill bill = billList.get(i);
+            Bill bill = mBillList.get(i);
 
             LinearLayout listLinearlayout11 = new LinearLayout(this);
             listLinearlayout11.setOrientation(LinearLayout.VERTICAL);
@@ -397,6 +402,8 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
 //entered edittext
 
             EditText amountInputET = new EditText(this);
+            Log.e(TAG,"bill.getId(): "+bill.getId());
+
             amountInputET.setTag(ENTERED_AMOUNT_PENDING_BILLS_TAG + bill.getId());
 
             enteredAmountEditTextList.add(amountInputET);
@@ -609,8 +616,16 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
                 if (!pendingAmount.equals("") && pendingAmount.length() > 0) {
 
                     double num = Double.parseDouble(pendingAmount);
-                    double collection = getTotalEnteredPendingBalanceExcept(this.mEditText.getTag().toString());
 
+                    Log.e(TAG,"number"+num);
+                    double collection = getTotalEnteredPendingBalanceExcept(this.mEditText.getTag().toString());
+                    Bill pendingBill = getPendingBill(this.mEditText.getTag().toString());
+
+                    double billBalanceAmount = pendingBill.getBillingBalance();
+
+                    EditText discountEditText = getEnteredDiscountEditTextByTag(DISCOUNT_AMOUNT_PENDING_BILLS_TAG+pendingBill.getId());
+
+                    double discountAmountIfAny = getDiscountAmountIfAny(discountEditText);
 
                     Log.d(TAG,"num : "+num + "  collection : "+collection + " getTotalAmount "+getTotalAmount());
 
@@ -618,13 +633,71 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
                     if (before > 0) {
                         String removedStr = Utility.replaceCharecterAt(lastEnteredString, start, ' ');
 
-                        if (Double.parseDouble(removedStr) + collection > getTotalAmount()) {
+                        if (Double.parseDouble(removedStr) + discountAmountIfAny > billBalanceAmount) {
                             this.mEditText.setText(lastEnteredString);
                             this.mEditText.setSelection(start);
 
                             showMessage(enteredAmt + " is exceeds the Total Balance");
                         }
-                    } else if (!(num + collection <= getTotalAmount())) {
+                    } else if (!(num + discountAmountIfAny <= billBalanceAmount)) {
+
+
+                        Log.d(TAG,"enteredAmt : "+enteredAmt);
+                        Log.d(TAG,"start : "+start);
+
+                        this.mEditText.setText(Utility.replaceCharecterAt(enteredAmt, start, ' '));
+                        this.mEditText.setSelection(start);
+                        showMessage("Amount Entered is exceeds the Total Balance");
+                    }
+
+//                    if (!(num + collection <= getTotalAmount())) {
+//                        this.mEditText.setText(pendingAmount.substring(0, pendingAmount.length() - 1));
+//                        this.mEditText.setSelection(pendingAmount.length() - 1);
+//
+//                        showMessage("Amount Entered is exceeds the Total Amount");
+//                    }
+                }
+
+                this.mEditText.addTextChangedListener(this);
+
+            }else if (mEditText.getTag().toString().contains(DISCOUNT_AMOUNT_PENDING_BILLS_TAG)) {
+
+                this.mEditText.removeTextChangedListener(this);
+
+                String disccountAmount = s.toString();
+
+                if (disccountAmount != null && disccountAmount.equals(".")) {
+                    disccountAmount = "0.00";
+                }
+
+                if (!disccountAmount.equals("") && disccountAmount.length() > 0) {
+
+                    double num = Double.parseDouble(disccountAmount);
+
+                    Log.e(TAG,"number"+num);
+                    double collection = getTotalEnteredPendingBalanceExcept(this.mEditText.getTag().toString());
+
+                    Bill pendingBill = getPendingBill(this.mEditText.getTag().toString());
+
+                    double billBalanceAmount = pendingBill.getBillingBalance();
+
+                    EditText enteredbillEditText = getEnteredBillBalanceEditTextByTag(ENTERED_AMOUNT_PENDING_BILLS_TAG+pendingBill.getId());
+
+                    double billBalanceAmountIfAny = getEnteredBillBalanceAmountIfAny(enteredbillEditText);
+
+                    Log.d(TAG,"num : "+num + "  collection : "+collection + " getTotalAmount "+getTotalAmount());
+
+
+                    if (before > 0) {
+                        String removedStr = Utility.replaceCharecterAt(lastEnteredString, start, ' ');
+
+                        if (Double.parseDouble(removedStr) + billBalanceAmountIfAny > billBalanceAmount) {
+                            this.mEditText.setText(lastEnteredString);
+                            this.mEditText.setSelection(start);
+
+                            showMessage(enteredAmt + " is exceeds the Total Balance");
+                        }
+                    } else if (!(num + billBalanceAmountIfAny <= billBalanceAmount)) {
 
 
                         Log.d(TAG,"enteredAmt : "+enteredAmt);
@@ -709,10 +782,27 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
 
 
         }
+
+        private Bill getPendingBill(String tag) {
+
+            Bill aBill =null;
+
+            for (Bill bill : mBillList) {
+                if(tag.equalsIgnoreCase(ENTERED_AMOUNT_PENDING_BILLS_TAG +bill.getId())|| tag.equalsIgnoreCase(DISCOUNT_AMOUNT_PENDING_BILLS_TAG +bill.getId())){
+
+                    aBill = bill;
+
+                    break;
+                }
+
+            }
+            return aBill;
+
+        }
     }
 
 
-    private EditText getEditTextByTag(String tag){
+    private EditText getEnteredAmountEditTextByTag(String tag){
 
         EditText returnEditText = null;
 
@@ -730,6 +820,73 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
         return returnEditText;
     }
 
+    private EditText getEnteredDiscountEditTextByTag(String tag){
+
+        EditText returnEditText = null;
+
+        for (EditText editText: enteredDiscountEditTextList) {
+
+            Log.e(TAG,"enteredDiscountEditTextList tag : "+editText.getTag() + " == "+tag);
+
+            if(editText.getTag().equals(tag)){
+
+                returnEditText = editText;
+
+                break;
+            }
+
+        }
+
+        return returnEditText;
+    }
+
+    private EditText getEnteredBillBalanceEditTextByTag(String tag){
+
+        EditText returnEditText = null;
+
+        for (EditText editText: enteredAmountEditTextList) {
+
+            Log.e(TAG,"enteredAmountEditTextList tag : "+editText.getTag() + " == "+tag);
+
+            if(editText.getTag().equals(tag)){
+
+                returnEditText = editText;
+
+                break;
+            }
+
+        }
+
+        return returnEditText;
+    }
+
+    private Double getDiscountAmountIfAny(EditText editText){
+
+        return getDoubleValueFromEditText(editText);
+
+    }
+
+
+    private Double getEnteredBillBalanceAmountIfAny(EditText editText){
+
+        return getDoubleValueFromEditText(editText);
+
+    }
+
+    private Double getDoubleValueFromEditText(EditText editText){
+        String amount = editText.getText().toString();
+
+        if (!(amount != null && amount.length() > 0)) {
+            amount = "0.00";
+        }
+
+        if (amount != null && amount.equals(".")) {
+            amount = "0.00";
+        }
+
+        return Double.parseDouble(amount);
+
+    }
 
     private double getTotalAmount() {
 
