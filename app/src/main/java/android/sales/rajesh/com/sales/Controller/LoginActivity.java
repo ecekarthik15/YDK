@@ -66,6 +66,8 @@ public class LoginActivity extends WebCallableCoreActivity implements View.OnCli
         passcodeHintTV = (TextView) findViewById(R.id.login_username_ET);
         passwordET = (EditText) findViewById(R.id.login_password_ET);
 
+
+
 //        passwordET.setText("saasf");
 
 //        loginValidationMessage();
@@ -201,23 +203,23 @@ public class LoginActivity extends WebCallableCoreActivity implements View.OnCli
             @Override
             public void gotLocation(Location location) {
 
-//                Location currentLocation = location;
-//
-//                UserLocation loginLocation = new UserLocation();
-//
-//                loginLocation.setUserId(users.getUserId());
-//                loginLocation.setLatitude(currentLocation.getLatitude()+"");
-//                loginLocation.setLongitude(currentLocation.getLongitude()+"");
-//                loginLocation.setRecordedAt(Utility.getDateAndTime());
-//                loginLocation.setDisplayName(UserLocation.USER_LOCATION_DISPLAY_NAME_LOGGEDIN);
-//
-//                loginLocation.persistData();
+                Location currentLocation = location;
+
+                UserLocation loginLocation = new UserLocation();
+
+                loginLocation.setUserId(users.getUserId());
+                loginLocation.setLatitude(currentLocation.getLatitude()+"");
+                loginLocation.setLongitude(currentLocation.getLongitude()+"");
+                loginLocation.setRecordedAt(Utility.getDateAndTime());
+                loginLocation.setDisplayName(UserLocation.USER_LOCATION_DISPLAY_NAME_LOGGEDIN);
+
+                loginLocation.persistData();
 
 
 
 
             }
-        });
+        },this);
 
     }
 

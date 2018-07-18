@@ -94,6 +94,9 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
     private String collectionAmount = "";
     private String discountAmount = "";
 
+    int locationCounter = 0;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,7 +156,7 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
                 app.messages("Location Received Latitude: " + location.getLatitude());
 
             }
-        });
+        },this);
 
 
         totalAmountTV = (TextView) findViewById(R.id.mp_total_amount_value_TV);

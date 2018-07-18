@@ -8,10 +8,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.sales.rajesh.com.sales.Core.CoreActivity;
+import android.sales.rajesh.com.sales.Core.WebCallableCoreActivity;
 import android.sales.rajesh.com.sales.Model.Bill;
 import android.sales.rajesh.com.sales.Model.Merchant;
 import android.sales.rajesh.com.sales.Model.UserLocation;
 import android.sales.rajesh.com.sales.Model.UserLogin;
+import android.sales.rajesh.com.sales.Parser.VisitedParser;
+import android.sales.rajesh.com.sales.Result.ParseResult;
+import android.sales.rajesh.com.sales.Result.VisitedParseResult;
 import android.sales.rajesh.com.sales.Utils.Constants;
 import android.sales.rajesh.com.sales.Utils.LocationHelper;
 import android.sales.rajesh.com.sales.Utils.SalesProtocol;
@@ -37,18 +41,21 @@ import java.util.List;
  * Created by Karthik on 2/1/17.
  */
 
-public class MerchantDetailActivity extends CoreActivity implements View.OnClickListener{
+public class MerchantDetailActivity extends WebCallableCoreActivity implements View.OnClickListener{
 
     private static final String TAG = MerchantDetailActivity.class.getSimpleName();
     protected static final int LOAD_MERCHANTS_DETAIL_ITEM_LIST = 0;
     protected static final int LOAD_PAYMENT_DETAIL = 1;
     protected static final int LOAD_ERROR_MSG = 2;
+    protected static final int SEND_VISITED_REQUEST = 3;
 
 
     TextView merchantNameTV;
     TextView merchantBalanceTagTV;
     TextView merchantBalanceValueTV;
     TextView merchantaddressTV;
+
+    Location currentLocation;
 
 
     Merchant selectedMerchant;
@@ -59,6 +66,8 @@ public class MerchantDetailActivity extends CoreActivity implements View.OnClick
 
     Button homeBt;
     Button visitedBt ,paymentHistoryBt;
+
+    int mLocationCounter = -1;
 
 
 
@@ -168,30 +177,52 @@ public class MerchantDetailActivity extends CoreActivity implements View.OnClick
 
         if(v == visitedBt){
 
+            mLocationCounter = 0;
+
+            Log.e(TAG,"visited action ====== ");
+
             LocationHelper locationHelper = new LocationHelper();
 
             locationHelper.getLocation(this, new LocationHelper.LocationResult() {
+
                 @Override
                 public void gotLocation(Location location) {
 
-                    Location currentLocation = location;
 
-                    UserLocation loginLocation = new UserLocation();
-                    UserLogin userLogin= UserLogin.getLastLoggedInUser();
-                    loginLocation.setUserId(userLogin.getUserId());
-                    loginLocation.setLatitude(currentLocation.getLatitude()+"");
-                    loginLocation.setLongitude(currentLocation.getLongitude()+"");
-                    loginLocation.setRecordedAt(Utility.getDateAndTime());
-                    loginLocation.setDisplayName(UserLocation.USER_LOCATION_DISPLAY_NAME_VISITED);
-                    loginLocation.setMerchantId(selectedMerchant.getId());
+                    if(mLocationCounter == 0) {
+                        currentLocation = location;
 
-                    loginLocation.persistData();
+                        UserLocation loginLocation = new UserLocation();
+                        UserLogin userLogin = UserLogin.getLastLoggedInUser();
+                        loginLocation.setUserId(userLogin.getUserId());
+                        loginLocation.setLatitude(currentLocation.getLatitude() + "");
+                        loginLocation.setLongitude(currentLocation.getLongitude() + "");
+                        loginLocation.setRecordedAt(Utility.getDateAndTime());
+                        loginLocation.setDisplayName(UserLocation.USER_LOCATION_DISPLAY_NAME_VISITED);
+                        loginLocation.setMerchantId(selectedMerchant.getId());
 
-                    showAlertMessage("YDKPro","You have been visited Successfully.", Constants.ALERT_WITH_OK_BUTTON);
+                        loginLocation.persistData();
+
+                        Log.e(TAG,"get Location called ============ "+currentLocation);
+
+
+
+                        mLocationCounter++;
+
+                        handler.sendEmptyMessage(SEND_VISITED_REQUEST);
+
+
+                    }
+
+
+//                    showAlertMessage("YDKPro","You have been visited Successfully.", Constants.ALERT_WITH_OK_BUTTON);
 
 
                 }
-            });
+            },this);
+
+
+            locationHelper.getLastLocation();
 
 
 
@@ -460,6 +491,17 @@ public class MerchantDetailActivity extends CoreActivity implements View.OnClick
                 }
                 break;
 
+                case SEND_VISITED_REQUEST:{
+
+                    UserLogin userLogin = UserLogin.getLastLoggedInUser();
+
+                    makeWebRequest(MerchantDetailActivity.this, Constants.getVisitedURL(currentLocation,userLogin.getUserId(),selectedMerchant.getId()),
+                            new VisitedParser(MerchantDetailActivity.this), Constants.VISITED_MERCHANT_REQUEST,
+                            false, "", true, false);
+
+                }
+                break;
+
             }
             super.handleMessage(msg);
 
@@ -545,6 +587,31 @@ public class MerchantDetailActivity extends CoreActivity implements View.OnClick
 
     @Override
     public void loadNext(int code) {
+
+    }
+
+    @Override
+    protected int useResponseData(ParseResult result, String identifier) {
+
+        VisitedParseResult visitedResult = (VisitedParseResult) result;
+
+        stopLoading();
+        if(visitedResult.getSuccess()){
+
+            Log.e(TAG,"Visited succesfull : ");
+
+        }else{
+            Log.e(TAG,"Visited failiure : ");
+            
+        }
+
+        return 0;
+    }
+
+    @Override
+    protected void handleTransportException(Exception ex) {
+
+        stopLoading();
 
     }
 

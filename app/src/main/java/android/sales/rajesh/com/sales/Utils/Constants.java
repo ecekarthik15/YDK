@@ -1,6 +1,15 @@
 package android.sales.rajesh.com.sales.Utils;
 
+import android.location.Location;
 import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by Karthik on 1/31/17.
@@ -40,6 +49,9 @@ public class Constants {
 
     public static final String OFFLINE_MODE = "offline mode";
 
+    public static final String VISITED_MERCHANT_REQUEST = "Visited Merchant";
+
+
     public static final String API_KEY = "A56R887L0";
 
 
@@ -56,7 +68,7 @@ public class Constants {
 
     public static final String SUBMIT_BILLS_URL = "/GetDetails?key="+API_KEY+"&EmpId=";
 
-    public static final String SUBMIT_LOCATION_URL = "/GetDetails?key="+API_KEY+"&EmpId=";
+    public static final String VISITED_URL = "/SaveCustomerVisit?key="+API_KEY+"&CustomerVisit=";
 
     public static final String DEFAULT_LOGIN_ERROR = "Login failed";
 
@@ -91,6 +103,55 @@ public class Constants {
     public static String getMerchantsUrl(int employeeId) {
 
         String url = SALES_SERVER_URL+SALES_MERCHANTS_URL+employeeId;
+
+        return url;
+
+    }
+
+    public static String getVisitedURL(Location location, int empId ,int merchantId) {
+
+        DateFormat df = DateFormat.getTimeInstance();
+        df.setTimeZone(TimeZone.getTimeZone("gmt"));
+        String gmtTime = df.format(new Date());
+        String jsonString = "";
+
+//        jsonString = "\\{\"cid\":"+merchantId+"," +
+//                "\"eid\":" + empId + ","+
+//                "\"la\":" + location.getLatitude() + ","+
+//                "\"lo\":" + location.getLongitude() + ","+
+//                "\"DateTime\":" + gmtTime +
+//    "\\}";
+
+//        String url = SALES_SERVER_URL+VISITED_URL+jsonString;
+
+
+        try {
+            jsonString = new JSONObject()
+                    .put("cid", merchantId+"")
+                    .put("eid", empId+"")
+                    .put("la", location.getLatitude()+"")
+                    .put("lo", location.getLongitude()+"")
+                    .put("DateTime", gmtTime).toString();
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+//        String message = object.toString();
+        jsonString = jsonString.replace("\"{", "{");
+        jsonString = jsonString.replace("}\"", "}");
+        jsonString = jsonString.replace("\\", "");
+
+        try {
+            jsonString = URLEncoder.encode(jsonString, "utf-8");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        String url = SALES_SERVER_URL+VISITED_URL+jsonString;
+
+
+
+        Log.e("Visited","Visited URL : "+url);
 
         return url;
 
