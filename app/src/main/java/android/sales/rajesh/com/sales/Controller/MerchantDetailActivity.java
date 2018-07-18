@@ -2,6 +2,7 @@ package android.sales.rajesh.com.sales.Controller;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.app.AlertDialog;
 
 /**
  * Created by Karthik on 2/1/17.
@@ -177,57 +179,30 @@ public class MerchantDetailActivity extends WebCallableCoreActivity implements V
 
         if(v == visitedBt){
 
-            mLocationCounter = 0;
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 
-            Log.e(TAG,"visited action ====== ");
+            alertDialog.setTitle("YDKPro");
+            alertDialog.setMessage(getResources().getString(R.string.visiting_customer_confirmation));
+            alertDialog.setButton("YES",
+                    new DialogInterface.OnClickListener() {
 
-            LocationHelper locationHelper = new LocationHelper();
+                        public void onClick(DialogInterface dialog, int which) {
 
-            locationHelper.getLocation(this, new LocationHelper.LocationResult() {
+                            updateLocation();
+                        }
+                    });
 
-                @Override
-                public void gotLocation(Location location) {
+            alertDialog.setButton2("NO",
+                    new DialogInterface.OnClickListener() {
 
-
-                    if(mLocationCounter == 0) {
-                        currentLocation = location;
-
-                        UserLocation loginLocation = new UserLocation();
-                        UserLogin userLogin = UserLogin.getLastLoggedInUser();
-                        loginLocation.setUserId(userLogin.getUserId());
-                        loginLocation.setLatitude(currentLocation.getLatitude() + "");
-                        loginLocation.setLongitude(currentLocation.getLongitude() + "");
-                        loginLocation.setRecordedAt(Utility.getDateAndTime());
-                        loginLocation.setDisplayName(UserLocation.USER_LOCATION_DISPLAY_NAME_VISITED);
-                        loginLocation.setMerchantId(selectedMerchant.getId());
-
-                        loginLocation.persistData();
-
-                        Log.e(TAG,"get Location called ============ "+currentLocation);
+                        public void onClick(DialogInterface dialog, int which) {
 
 
+                        }
+                    });
 
-                        mLocationCounter++;
-
-                        handler.sendEmptyMessage(SEND_VISITED_REQUEST);
-
-
-                    }
-
-
-//                    showAlertMessage("YDKPro","You have been visited Successfully.", Constants.ALERT_WITH_OK_BUTTON);
-
-
-                }
-            },this);
-
-
-            locationHelper.getLastLocation();
-
-
-
-
-
+            alertDialog.show();
+            
         }
 
         if(v == paymentHistoryBt){
@@ -240,6 +215,56 @@ public class MerchantDetailActivity extends WebCallableCoreActivity implements V
 
             startActivity(gotoMerchantPaymentHistory);
         }
+    }
+
+    private void updateLocation(){
+
+        mLocationCounter = 0;
+
+        Log.e(TAG,"visited action ====== ");
+
+        LocationHelper locationHelper = new LocationHelper();
+
+        locationHelper.getLocation(this, new LocationHelper.LocationResult() {
+
+            @Override
+            public void gotLocation(Location location) {
+
+
+                if(mLocationCounter == 0) {
+                    currentLocation = location;
+
+//                        UserLocation loginLocation = new UserLocation();
+//                        UserLogin userLogin = UserLogin.getLastLoggedInUser();
+//                        loginLocation.setUserId(userLogin.getUserId());
+//                        loginLocation.setLatitude(currentLocation.getLatitude() + "");
+//                        loginLocation.setLongitude(currentLocation.getLongitude() + "");
+//                        loginLocation.setRecordedAt(Utility.getDateAndTime());
+//                        loginLocation.setDisplayName(UserLocation.USER_LOCATION_DISPLAY_NAME_VISITED);
+//                        loginLocation.setMerchantId(selectedMerchant.getId());
+
+//                        loginLocation.persistData();
+
+                    Log.e(TAG,"get Location called ============ "+currentLocation);
+
+
+
+                    mLocationCounter++;
+
+                    handler.sendEmptyMessage(SEND_VISITED_REQUEST);
+
+
+                }
+
+
+//                    showAlertMessage("YDKPro","You have been visited Successfully.", Constants.ALERT_WITH_OK_BUTTON);
+
+
+            }
+        },this);
+
+
+        locationHelper.getLastLocation();
     }
 
 
@@ -602,7 +627,7 @@ public class MerchantDetailActivity extends WebCallableCoreActivity implements V
 
         }else{
             Log.e(TAG,"Visited failiure : ");
-            
+
         }
 
         return 0;

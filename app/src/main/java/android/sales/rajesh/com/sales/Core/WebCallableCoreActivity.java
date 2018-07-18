@@ -74,8 +74,14 @@ public abstract class WebCallableCoreActivity extends CoreActivity implements We
 
         if (!background && pd != null && !pd.isShowing()) {
 
-            pd.setMessage(identifier);
-            loadingHandler.sendEmptyMessage(SHOW_LOADING);
+            if(identifier.equals(Constants.VISITED_MERCHANT_REQUEST)){
+                pd.setMessage("Submitting");
+                loadingHandler.sendEmptyMessage(SHOW_LOADING);
+
+            }else {
+                pd.setMessage(identifier);
+                loadingHandler.sendEmptyMessage(SHOW_LOADING);
+            }
 
         }
         newWebRequest.start();

@@ -34,6 +34,7 @@ import android.widget.TextView;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -89,6 +90,12 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
 
     List<Bill> mBillList;
 
+    HashMap<String, String> mEnteredBillAmtHmap;
+    HashMap<String, String> mEnteredDiscountAmtHmap;
+
+
+    List<BillPayments> mBillPaymentList;
+
     double totalEnteredPendingBillsAmount;
 
     private String collectionAmount = "";
@@ -129,6 +136,11 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
             mBalance = ""+selectedMerchant.getTotalEBalance();
         }
 
+        mBillPaymentList = new ArrayList<BillPayments>();
+
+        mEnteredBillAmtHmap = new HashMap<>();
+        mEnteredDiscountAmtHmap = new HashMap<>();
+
 
         merchantNameTV = (TextView) findViewById(R.id.mp_customer_name_value_TV);
         dateTV = (TextView) findViewById(R.id.mp_date_value_TV);
@@ -153,7 +165,7 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
             public void gotLocation(Location location) {
                 currentLocation = location;
 
-                app.messages("Location Received Latitude: " + location.getLatitude());
+//                app.messages("Location Received Latitude: " + location.getLatitude());
 
             }
         },this);
@@ -298,10 +310,12 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
 
         Log.d(TAG, "billListquery : " + billListquery);
 
+        enteredAmountEditTextList = new ArrayList<>();
+        enteredDiscountEditTextList = new ArrayList<>();
+
         mBillList = Bill.readData(billListquery);
         if (mBillList != null && mBillList.size() > 0) {
-            enteredAmountEditTextList = new ArrayList<>(mBillList.size());
-            enteredDiscountEditTextList = new ArrayList<>(mBillList.size());
+
         }
 
         if(mBillList == null){
@@ -417,7 +431,6 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
 
             enteredAmountEditTextList.add(amountInputET);
 
-            amountInputET.addTextChangedListener(new PaymentTextWatcher(amountInputET));
 
             int amountInputETHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
 
@@ -442,8 +455,12 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
             EditText discountAmountInputET = new EditText(this);
             discountAmountInputET.setTag(DISCOUNT_AMOUNT_PENDING_BILLS_TAG + bill.getId());
 
+            discountAmountInputET.setVisibility(View.GONE);
+
             enteredDiscountEditTextList.add(discountAmountInputET);
 
+            //dont change this
+            amountInputET.addTextChangedListener(new PaymentTextWatcher(amountInputET));
             discountAmountInputET.addTextChangedListener(new PaymentTextWatcher(discountAmountInputET));
 
             int discountInputETHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
@@ -465,8 +482,6 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
 
             discountAmountInputET.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
             listLinearlayout11.addView(discountAmountInputET);
-
-
 
         }
 
@@ -640,7 +655,6 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
                     double discountAmountIfAny = getDiscountAmountIfAny(discountEditText);
 
 
-
                     if (before > 0) {
                         String removedStr = Utility.replaceCharecterAt(lastEnteredString, start, ' ');
 
@@ -661,12 +675,6 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
                         showMessage("Amount Entered is exceeds the Total Balance");
                     }
 
-//                    if (!(num + collection <= getTotalAmount())) {
-//                        this.mEditText.setText(pendingAmount.substring(0, pendingAmount.length() - 1));
-//                        this.mEditText.setSelection(pendingAmount.length() - 1);
-//
-//                        showMessage("Amount Entered is exceeds the Total Amount");
-//                    }
                 }
 
                 this.mEditText.addTextChangedListener(this);
@@ -716,12 +724,6 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
                         showMessage("Amount Entered is exceeds the Total Balance");
                     }
 
-//                    if (!(num + collection <= getTotalAmount())) {
-//                        this.mEditText.setText(pendingAmount.substring(0, pendingAmount.length() - 1));
-//                        this.mEditText.setSelection(pendingAmount.length() - 1);
-//
-//                        showMessage("Amount Entered is exceeds the Total Amount");
-//                    }
                 }
 
                 this.mEditText.addTextChangedListener(this);
@@ -736,6 +738,10 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
         public void afterTextChanged(Editable s) {
 
             Log.d(TAG, "onTextChanged : called");
+
+
+            Bill pendingBill = getPendingBill(this.mEditText.getTag().toString());
+
 
 
             if (this.mEditText.getTag().equals(MerchantPaymentActivity.COLLECTION_AMOUNT_EDITTEXT_TAG)) {
@@ -753,7 +759,7 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
 
             } else if(this.mEditText.getTag().toString().contains(MerchantPaymentActivity.ENTERED_AMOUNT_PENDING_BILLS_TAG)){
 
-                double totalEnteredPendingAmount = getTotalEnteredPendingBalance();
+                double totalEnteredPendingAmount = getTotalEnteredPendingBalance(pendingBill);
                 String formatted1 = NumberFormat.getCurrencyInstance(new Locale("en", "in")).format((totalEnteredPendingAmount));
 
                 mTotalCollectedAmount =  String.valueOf(totalEnteredPendingAmount);
@@ -767,7 +773,7 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
 
             }else if(this.mEditText.getTag().toString().contains(MerchantPaymentActivity.DISCOUNT_AMOUNT_PENDING_BILLS_TAG)){
 
-                double totalEnteredDiscountAmount = getTotalEnteredDiscountAmount();
+                double totalEnteredDiscountAmount = getTotalEnteredDiscountAmount(pendingBill);
                 String formatted1 = NumberFormat.getCurrencyInstance(new Locale("en", "in")).format((totalEnteredDiscountAmount));
                 discountAmountET.setText(formatted1);
 
@@ -781,31 +787,56 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
 
         }
 
-        private double getTotalEnteredPendingBalance() {
+        private double getTotalEnteredPendingBalance(Bill bill) {
 
             double total = 0;
 
-            for (EditText editText : enteredAmountEditTextList) {
+            if(enteredAmountEditTextList == null){
+                return  total;
+            }
+
+            for (int i = 0; i< enteredAmountEditTextList.size(); i++) {
+
+                EditText enteredAmounteditText = enteredAmountEditTextList.get(i);
+                EditText enteredDiscountEditText = enteredDiscountEditTextList.get(i);
 
 
-                String editTextTag = editText.getTag().toString();
+                String editTextTag = enteredAmounteditText.getTag().toString();
 
 
-                String valueText = editText.getText().toString();
+                String valueText = enteredAmounteditText.getText().toString();
+
                 if (!(valueText != null && valueText.length() > 0)) {
                     valueText = "0.0";
+
+                    enteredDiscountEditText.setText("");
+                    enteredDiscountEditText.setVisibility(View.GONE);
+
+                    if(editTextTag.contains(bill.getId()+"")) {
+                        mEnteredBillAmtHmap.remove(bill.getId() + "");
+                    }
+
+                }else{
+                    enteredDiscountEditText.setVisibility(View.VISIBLE);
+
+                    if(editTextTag.contains(bill.getId()+"")){
+                        mEnteredBillAmtHmap.put(bill.getId()+"",valueText);
+
+                    }
                 }
 
                 total = total + Double.parseDouble(valueText);
 
             }
 
+            Log.e(TAG,"mEnteredBillAmtHmap : "+mEnteredBillAmtHmap);
+
             return total;
 
 
         }
 
-        private double getTotalEnteredDiscountAmount() {
+        private double getTotalEnteredDiscountAmount(Bill bill) {
 
             double total = 0;
 
@@ -818,11 +849,21 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
                 String valueText = editText.getText().toString();
                 if (!(valueText != null && valueText.length() > 0)) {
                     valueText = "0.0";
+                    if(editTextTag.contains(bill.getId()+"")) {
+                        mEnteredDiscountAmtHmap.remove(bill.getId() + "");
+                    }
+                }else{
+                    if(editTextTag.contains(bill.getId()+"")){
+                        mEnteredDiscountAmtHmap.put(bill.getId()+"",valueText);
+
+                    }
                 }
 
                 total = total + Double.parseDouble(valueText);
-
             }
+
+            Log.e(TAG,"mEnteredDiscountAmtHmap : "+mEnteredDiscountAmtHmap);
+
 
             return total;
 
@@ -1025,7 +1066,6 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
             if(message.length() > 0){
 
                 showAlertMessage("YDKPro",message, Constants.ALERT_WITH_OK_BUTTON);
-
             }else {
 
                 handler.sendEmptyMessage(LOAD_PAYMENT_RECEIPT_ACTIVITY);
@@ -1042,9 +1082,9 @@ public class MerchantPaymentActivity extends WebCallableCoreActivity implements 
         Double totalPendingEntered = 0.0;
 
 
-        String collectionAmountStr = this.collectionAmountET.getText().toString();
+        String collectionAmountStr = mTotalCollectedAmount.toString();
 
-        String discountAmountStr = this.discountAmountET.getText().toString();
+        String discountAmountStr = mTotalDiscountedAmount.toString();
 
 
         if(!(collectionAmountStr != null && collectionAmountStr.length() > 0)){

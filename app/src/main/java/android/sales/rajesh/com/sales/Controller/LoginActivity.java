@@ -109,6 +109,7 @@ public class LoginActivity extends WebCallableCoreActivity implements View.OnCli
                     gotoMerchantActivity.putExtra("user", users);
 
                     startActivity(gotoMerchantActivity);
+
                     break;
 
                 case SHOW_LOGIN_ERROR:
@@ -205,15 +206,15 @@ public class LoginActivity extends WebCallableCoreActivity implements View.OnCli
 
                 Location currentLocation = location;
 
-                UserLocation loginLocation = new UserLocation();
+//                UserLocation loginLocation = new UserLocation();
+//
+//                loginLocation.setUserId(users.getUserId());
+//                loginLocation.setLatitude(currentLocation.getLatitude()+"");
+//                loginLocation.setLongitude(currentLocation.getLongitude()+"");
+//                loginLocation.setRecordedAt(Utility.getDateAndTime());
+//                loginLocation.setDisplayName(UserLocation.USER_LOCATION_DISPLAY_NAME_LOGGEDIN);
 
-                loginLocation.setUserId(users.getUserId());
-                loginLocation.setLatitude(currentLocation.getLatitude()+"");
-                loginLocation.setLongitude(currentLocation.getLongitude()+"");
-                loginLocation.setRecordedAt(Utility.getDateAndTime());
-                loginLocation.setDisplayName(UserLocation.USER_LOCATION_DISPLAY_NAME_LOGGEDIN);
-
-                loginLocation.persistData();
+//                loginLocation.persistData();
 
 
 

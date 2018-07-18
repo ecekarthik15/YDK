@@ -25,5 +25,8 @@
 
     <string name="payment_history_title">Payment History</string>
 
+    <string name="visiting_customer_confirmation">Do you really visit the customer shop?</string>
+
+    <string name="submitting_payment_confirmation">Do you really submit the payment?</string>
 
 </resources>

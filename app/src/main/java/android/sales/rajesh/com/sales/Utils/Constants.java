@@ -1,13 +1,16 @@
 package android.sales.rajesh.com.sales.Utils;
 
 import android.location.Location;
+import android.sales.rajesh.com.sales.Model.Bill;
 import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -56,9 +59,6 @@ public class Constants {
 
 
 
-
-    public static final String REGISTERED = "REGISTERED";
-
 //http://www.ydkoffice.com/mobile/ValidateEmployee?key=A56R887L0&Passcode=78906
     public static final String SALES_SERVER_URL = "http://www.ydkoffice.com/mobile";
 
@@ -76,9 +76,6 @@ public class Constants {
     public static final String CHOOSE_DISTRICT_HEADER = "Choose District";
 
     public static final String CHOOSE_PRINTER_HEADER = "Choose Printer";
-
-
-
 
 
 
@@ -115,16 +112,6 @@ public class Constants {
         String gmtTime = df.format(new Date());
         String jsonString = "";
 
-//        jsonString = "\\{\"cid\":"+merchantId+"," +
-//                "\"eid\":" + empId + ","+
-//                "\"la\":" + location.getLatitude() + ","+
-//                "\"lo\":" + location.getLongitude() + ","+
-//                "\"DateTime\":" + gmtTime +
-//    "\\}";
-
-//        String url = SALES_SERVER_URL+VISITED_URL+jsonString;
-
-
         try {
             jsonString = new JSONObject()
                     .put("cid", merchantId+"")
@@ -143,6 +130,63 @@ public class Constants {
 
         try {
             jsonString = URLEncoder.encode(jsonString, "utf-8");
+
+            Log.e("Visited","decoded str: "+URLDecoder.decode(jsonString, "utf-8"));
+
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        String url = SALES_SERVER_URL+VISITED_URL+jsonString;
+
+
+
+        Log.e("Visited","Visited URL : "+url);
+
+        return url;
+
+    }
+
+
+    public static String getPaymentURL(Location location, int empId , int merchantId, int paymentType,int paymentId, String receiptNumber, String receiptDate, String collectionAmount, String discountAmount , String totalAmount, String createdDateAndTime, ArrayList<Bill> billsApplied) {
+
+        DateFormat df = DateFormat.getTimeInstance();
+        df.setTimeZone(TimeZone.getTimeZone("gmt"));
+        String gmtTime = df.format(new Date());
+        String jsonString = "";
+
+        try {
+            jsonString = new JSONObject()
+                    .put("cid", merchantId+"")
+                    .put("eid", empId+"")
+                    .put("tid", paymentType+"")
+                    .put("rno", receiptNumber+"")
+                    .put("rdt", receiptDate+"")
+                    .put("ca", collectionAmount+"")
+                    .put("da", discountAmount+"")
+                    .put("ta", totalAmount+"")
+                    .put("la", location.getLatitude()+"")
+                    .put("lo", location.getLongitude()+"")
+                    .put("cd", createdDateAndTime).toString();
+
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+//        String message = object.toString();
+        jsonString = jsonString.replace("\"{", "{");
+        jsonString = jsonString.replace("}\"", "}");
+        jsonString = jsonString.replace("\\", "");
+
+        try {
+            jsonString = URLEncoder.encode(jsonString, "utf-8");
+
+            Log.e("Visited","decoded str: "+URLDecoder.decode(jsonString, "utf-8"));
+
+
+
         }catch (Exception e){
             e.printStackTrace();
         }
